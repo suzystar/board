@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시글목록</title>
+  <link rel="stylesheet" href="/css/board/all.css">
+  <script th:inline="javascript">
+    window.totalCnt = [[${totalCnt}]];
+    window.cpgs = [[${cpgs}]];
+    window.cp = [[${cp}]];
+</script>
+  <script type="module" src="/js/board/all.js" async></script>
+</head>
+<body>
+<h3>게시글목록</h3>
+
+<form id="frm" action="/boards/del" method="POST">
+  <div>
+    <table>
+      <thead>
+      <tr>
+        <td id="selectAll">전체</td>
+        <td>게시글 아이디</td>
+        <td>작성자 이름</td>
+      </tr>
+      </thead>
+      <tbody id="rows">
+      <tr class="row" th:each="board :${list}"  th:data-user-id="${board.userId}">
+        <td class="chk"><input type="checkbox" name="pids" th:value="${board.userId}"></td>
+        <td th:text="${board.userId}"></td>
+        <td th:text="${board.pname}"></td>
+        <td th:text="${board.title}"></td>
+        <td th:text="${#temporals.format(board.cdate, 'yyyy년 MM월 dd일 a hh시 mm분')}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button type="submit" id="delBtn">삭제</button>
+    <button type="button" id="addBtn">등록</button>
+  </div>
+</form>
+<div id="pagination">  </div>
+</body>
+</html>

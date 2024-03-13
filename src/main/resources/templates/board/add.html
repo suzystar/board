@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시글등록</title>
+  <link rel="stylesheet" href="/css/board/add.css">
+</head>
+<body>
+<form action="/boards/add" method="post">
+  <div class="d1">
+    <h3>게시글 등록</h3>
+    <div>
+      <label for="title">제목</label>
+      <input id="title" name="title" type="text" placeholder="영문/숫자/한글/_-가능" th:value="${addForm.title}">
+      <span class="err-msg" id="errTitle"></span>
+      <span class="err-msg" th:if="${s_err_title != ''}" th:class="'err-msg on'" th:text="${s_err_title}"></span>
+    </div>
+    <div>
+      <label for="contents">내용</label>
+      <textarea id="contents" name="contents" type="text" placeholder="영문/숫자/한글/_-가능" th:value="${addForm.contents}"></textarea>
+      <span class="err-msg" id="errContents"></span>
+      <span class="err-msg" th:if="${s_err_contents != ''}" th:class="'err-msg on'" th:text="${s_err_contents}"></span>
+    </div>
+    <div>
+      <label for="pname">작성자</label>
+      <input id="pname" name="pname" type="text" placeholder="영문/숫자/한글/_-가능" th:value="${addForm.pname}">
+      <span class="err-msg" id="errPname"></span>
+      <span class="err-msg" th:if="${s_err_pname != ''}" th:class="'err-msg on'" th:text="${s_err_pname}"></span>
+    </div>
+  </div>
+  <div class="btns">
+    <input type="reset" value="취소">
+    <input type="submit" value="저장">
+    <input type="button" value="목록" onclick="location.href='/boards'">
+  </div>
+</form>
+</body>
+</html>

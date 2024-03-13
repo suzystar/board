@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판목록</title>
+  <style>
+    * {outline:1px solid red;}
+    .row:hover {
+       background-color : yellow;
+    }
+  </style>
+</head>
+<body>
+<h3>게시판</h3>
+
+<form id="frm" action="/products/del" method="POST">
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <td id="selectAll">전체</td>
+          <td>게시글번호</td>
+          <td>작성자</td>
+        </tr>
+      </thead>
+      <tbody id="rows">
+        <tr class="row" th:each="product :${list}"  th:data-product-id="${product.productId}">
+          <td class="chk"><input type="checkbox" name="pids" th:value="${product.productId}"></td>
+          <td th:text="${product.productId}"></td>
+          <!--/*  <td><a th:href="|products/${product.productId}/detail|" th:text="${product.pname}"></a></td> */-->
+          <!--/* <td><a th:href="@{/products/{productId}/detail(productId=${product.productId})}" th:text="${product.pname}"></a></td> */-->
+          <td th:text="${product.pname}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button type="submit" id="delBtn">삭제</button>
+    <button type="button" id="addBtn">등록</button>
+  </div>
+</form>
+<script>
+  const $addBtn = document.getElementById('addBtn');
+  $addBtn.addEventListener('click', evt=>{
+    location.href = '/products/add';                // GET   http://localhost:9080/products/add
+  });
+
+  const $rows = document.getElementById('rows');
+  $rows.addEventListener('click',evt=>{
+    //1) input요소 이면서 checkbox는 제외
+    if(evt.target.tagName === 'INPUT' &&  evt.target.getAttribute('type') == 'checkbox') {
+      return;
+    };
+    //2) td요소중  checkbox있는 td는 제외
+    if(evt.target.tagName == 'TD' && evt.target.classList.contains('chk')){
+      return;
+    }
+    const $row = evt.target.closest('.row');
+    const productId = $row.dataset.productId;
+    location.href = `/products/${productId}/detail`;    // GET http://localhost:9080/상품번호/detail
+  });
+
+  //삭제
+  const frm = document.getElementById('frm');
+  frm.addEventListener('submit', evt=>{
+    evt.preventDefault();  //기본 이벤트(submit) 중지
+    if(!window.confirm('삭제하시겠습니까?')) return;
+    evt.target.submit();
+  });
+
+  //전체선택
+  //일부 체크박스가 체크되어있다면 언체크, 그렇지 않으면 모든 체크박스를 체크
+  const $selectAll = document.getElementById('selectAll');
+  $selectAll.addEventListener('click',evt=>{
+    //Array.from(iteral) : iteral객체를 배열로 변환
+    const $inputs = Array.from(document.querySelectorAll('#rows input[type=checkbox]'));
+    const isSomeChecked = $inputs.some(input=>input.checked == true)
+    if(isSomeChecked) {
+      $inputs.forEach(input=>input.checked = false);  // 일부 체크박스가 uncheck면 모든 체크박스를 unchecked 변경
+    }else{
+      $inputs.forEach(input=>input.checked = true);  // 모든 체크박스를 checked로 변경
+    }
+  });
+</script>
+</body>
+</html>
