@@ -91,6 +91,7 @@ public class CommentDAOImpl implements CommentDAO{
     sql.append("  select ccomment_id,cnum,contents,pname,cdate,udate ");
     sql.append("    from ccomment ");
     sql.append("where cnum = :cnum ");
+    sql.append("order by ccomment_id desc ");
     sql.append("offset (:reqPage - 1) * :recCnt rows fetch first :recCnt rows only ");
 
     Map<String,Long> param = Map.of("cnum", cnum, "reqPage",reqPage,"recCnt",recCnt);

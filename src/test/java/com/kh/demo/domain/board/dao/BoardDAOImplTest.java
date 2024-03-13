@@ -24,7 +24,6 @@ class BoardDAOImplTest {
       board.setTitle("제목" + i);
       board.setContents("내용" + i);
       board.setPname("작성자");
-      board.setEmail("user1@kh.com");
       Long boardId = boardDAO.save(board);
     }
   }

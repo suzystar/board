@@ -1,4 +1,4 @@
-/////*--댓글부분--*/
+///*-*-*-*-댓글부분-/**/---*/
 //    const commentWrite = () => {
 //            const writer = document.getElementById("commentWriter").value;
 //            const contents = document.getElementById("commentContents").value;

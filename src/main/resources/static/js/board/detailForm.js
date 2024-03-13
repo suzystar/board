@@ -2,7 +2,7 @@
   const $modifyBtn = document.getElementById('modifyBtn');  //수정버튼
   const $deleteBtn = document.getElementById('deleteBtn');  //삭제버튼
   const $listBtn = document.getElementById('listBtn');      //목록버튼
-  const uid = document.getElementById('userId').value;      //유저아이디
+  const pid = document.getElementById('userId').value;      //유저아이디
 
   //수정
   $modifyBtn.addEventListener('click',e=>{
@@ -53,6 +53,9 @@ window.addEventListener('load', () => {
 
 // 댓글 목록 조회 및 페이징 표시
 function listAndDisplayPagination() {
+  //댓글 목록 불러오기
+   list();
+
   // Pagination 객체 생성
   pagination.setTotalRecords(totalCnt); // 총 댓글 수 설정
   pagination.setCurrentPageGroupStart(cpgs); // 페이지 그룹 시작번호 설정
@@ -98,6 +101,71 @@ async function addComment() {
 }
 
 
+
+
+// 목록조회
+function list() {
+    const reqPage = pagination.currentPage || 1; // 요청 페이지가 null인 경우 1로 설정
+    const reqCnt = pagination.recordsPerPage; // 페이지당 레코드수
+    const currentCnum = document.getElementById('currentCnum').value; // 현재 게시물 번호
+    const $commentList = document.querySelector('.list'); // 댓글 목록을 표시할 요소
+
+    fetch(`/api/boards/comments?cnum=${currentCnum}&reqPage=${reqPage}&reqCnt=${reqCnt}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.header.rtcd === '00') {
+          const comments = data.body;
+          $commentList.innerHTML = ''; // 댓글 목록을 초기화
+
+          // 각 댓글을 HTML에 추가
+          comments.forEach(comment => {
+            const li = document.createElement('li');
+            li.classList.add('item', 'read');
+            li.dataset.replyNumber = comment.ccommentId; // 댓글 번호를 dataset에 저장
+
+            const span = document.createElement('span');
+            span.textContent = comment.contents;
+            li.appendChild(span);
+
+            const modifyBtn = document.createElement('button');
+            modifyBtn.classList.add('cmodifyBtn');
+            modifyBtn.textContent = '수정';
+            li.appendChild(modifyBtn);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('cdelBtn');
+            deleteBtn.textContent = '삭제';
+            li.appendChild(deleteBtn);
+
+            $commentList.appendChild(li);
+          });
+        } else {
+          // 오류 발생 시 처리 로직
+          console.log(data);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+}
+
+//등록
+document.getElementById('addBtn').addEventListener('click',evt=>{
+    //1)유효성체크
+    if(comment.value.trim().length < 3) {
+      //alert('3글자 이상 입력바랍니다.');
+     commentErrMsg.textContent = '3글자 이상 입력바랍니다.';
+      return;
+    }else{
+      commentErrMsg.textContent = '';
+    }
+
+    addComment();
+    comment.value = '';
+    comment.focus();
+
+});
+
 // 댓글 수정
 async function updateComment(ccommentId, updatedComment) {
   try {
@@ -137,70 +205,6 @@ async function deleteComment(ccommentId) {
     throw new Error('댓글 삭제 중 오류 발생: ' + error.message);
   }
 }
-
-
-// 목록조회
-function list() {
-  const reqPage = pagination.currentPage;   // 요청 페이지
-  const reqCnt = pagination.recordsPerPage; // 페이지당 레코드수
-  const currentCnum = document.getElementById('currentCnum').value; // 현재 게시물 번호
-  const $commentList = document.querySelector('.list'); // 댓글 목록을 표시할 요소
-
-  fetch(`/api/boards/comment?cnum=${currentCnum}&reqPage=${reqPage}&reqCnt=${reqCnt}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.header.rtcd === '00') {
-        const comments = data.body;
-        $commentList.innerHTML = ''; // 댓글 목록을 초기화
-
-        // 각 댓글을 HTML에 추가
-        comments.forEach(comment => {
-          const li = document.createElement('li');
-          li.classList.add('item', 'read');
-          li.dataset.replyNumber = comment.ccommentId; // 댓글 번호를 dataset에 저장
-
-          const span = document.createElement('span');
-          span.textContent = comment.contents;
-          li.appendChild(span);
-
-          const modifyBtn = document.createElement('button');
-          modifyBtn.classList.add('cmodifyBtn');
-          modifyBtn.textContent = '수정';
-          li.appendChild(modifyBtn);
-
-          const deleteBtn = document.createElement('button');
-          deleteBtn.classList.add('cdelBtn');
-          deleteBtn.textContent = '삭제';
-          li.appendChild(deleteBtn);
-
-          $commentList.appendChild(li);
-        });
-      } else {
-        // 오류 발생 시 처리 로직
-        console.log(data);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-}
-
-//등록
-document.getElementById('addBtn').addEventListener('click',evt=>{
-    //1)유효성체크
-    if(comment.value.trim().length < 3) {
-      //alert('3글자 이상 입력바랍니다.');
-     commentErrMsg.textContent = '3글자 이상 입력바랍니다.';
-      return;
-    }else{
-      commentErrMsg.textContent = '';
-    }
-
-    addComment();
-    comment.value = '';
-    comment.focus();
-
-});
 
 // 수정 버튼 클릭 시
 document.querySelector('.list').addEventListener('click', event => {

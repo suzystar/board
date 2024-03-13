@@ -1,113 +1,4 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="ko"-->
-<!--      xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--  <meta charset="UTF-8">-->
-<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--  <title>게시글조회</title>-->
-<!--  <link rel="stylesheet" href="/css/board/detailForm.css">-->
-<!--  <script th:inline="javascript">-->
-<!--    window.totalCnt = [[${totalCnt}]];-->
-<!--   window.cpgs = [[${cpgs}]];-->
-<!--   window.cp = [[${cp}]];-->
 
-<!--  </script>-->
-<!--  <script type="module" src="/js/board/detailForm.js" async></script>-->
-<!--</head>-->
-<!--<body>-->
-<!--&lt;!&ndash; 현재 게시글 번호 &ndash;&gt;-->
-<!--<input type="hidden" id="currentCnum" th:value="${board.userId}" />-->
-<!--&lt;!&ndash; 현재 로그인한 사용자 아이디 &ndash;&gt;-->
-<!--<input type="hidden" id="currentPname" th:value="${session.loginMember.nickname}" />-->
-
-<!--<h3>게시글조회</h3>-->
-<!--<form action="#" method="post">-->
-<!--  <div><label for="userId">게시글 아이디</label><input id="userId" type="text" th:value="${board.userId}" readonly></div>-->
-<!--  <div><label for="pname">글쓴이 이름</label><input id="pname" name="pname" type="text" th:value="${board.pname}" readonly></div>-->
-<!--  <div><label for="title">글 제목</label><input id="title" name="title" type="text" th:value="${board.title}" readonly></div>-->
-<!--  <div><label for="contents">글 내용</label><input id="contents" name="contents" type="text" th:value="${board.contents}" readonly></div>-->
-<!--  <div><label>등록일</label><span th:text="${#temporals.format(board.cdate,'yyyy년 MM월 dd일 a hh시 mm분')}"></span></div>-->
-<!--  <div><label>수정일</label><span th:text="${#temporals.format(board.udate,'yyyy년 MM월 dd일 a hh시 mm분')}"></span></div>-->
-
-<!--  <div>-->
-<!--    <input id="modifyBtn" type="button" value="수정">-->
-<!--    <input id="deleteBtn" type="button" value="삭제">-->
-<!--    <input id="listBtn" type="button" value="목록">-->
-<!--  </div>-->
-<!--</form>-->
-<!--&lt;!&ndash;<dialog id="delModal">&ndash;&gt;-->
-<!--&lt;!&ndash;  <p>삭제하시겠습니까?</p>&ndash;&gt;-->
-<!--&lt;!&ndash;  <form action="" method="dialog">&ndash;&gt;-->
-<!--&lt;!&ndash;    <button id="cancelBtn">취소</button>&ndash;&gt;-->
-<!--&lt;!&ndash;    <button id="delItemBtn">삭제</button>&ndash;&gt;-->
-<!--&lt;!&ndash;  </form>&ndash;&gt;-->
-<!--&lt;!&ndash;</dialog>&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;댓글 작성 부분&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;<div id="comment-write">&ndash;&gt;-->
-<!--&lt;!&ndash;  <input type="text" id="commentWriter" placeholder="작성자">&ndash;&gt;-->
-<!--&lt;!&ndash;  <input type="text" id="commentContents" placeholder="내용">&ndash;&gt;-->
-<!--&lt;!&ndash;  <button id="comment-write-btn" onclick="commentWrite()">댓글작성하기</button>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;&lt;!&ndash;댓글 출력 부분&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;    <div id="comment-list">&ndash;&gt;-->
-<!--&lt;!&ndash;      <table>&ndash;&gt;-->
-<!--&lt;!&ndash;        <tr>&ndash;&gt;-->
-<!--&lt;!&ndash;          <th>댓글번호</th>&ndash;&gt;-->
-<!--&lt;!&ndash;          <th>작성자</th>&ndash;&gt;-->
-<!--&lt;!&ndash;          <th>내용</th>&ndash;&gt;-->
-<!--&lt;!&ndash;          <th>작성시간</th>&ndash;&gt;-->
-<!--&lt;!&ndash;        </tr>&ndash;&gt;-->
-<!--&lt;!&ndash;        <tr th:each="comment: ${commentList}">&ndash;&gt;-->
-<!--&lt;!&ndash;          <td th:text="${comment.id}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;          <td th:text="${comment.commentWriter}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;          <td th:text="${comment.commentContents}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;          <td th:text="${comment.commentCreatedTime}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;        </tr>&ndash;&gt;-->
-<!--&lt;!&ndash;      </table>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-
-
-<!--&lt;!&ndash;</body>&ndash;&gt;-->
-<!--&lt;!&ndash;</html>&ndash;&gt;-->
-
-<!--<h4>댓글</h4>-->
-<!--<div class="d1">-->
-<!--  <div class="c1">-->
-<!--    <textarea id="comment" cols="30" rows="3"></textarea>-->
-<!--    <button id="addBtn">등록</button> &lt;!&ndash; ID 수정 &ndash;&gt;-->
-<!--  </div>-->
-<!--  <div id="commentErrMsg"></div>-->
-
-<!--  <ul class="list">-->
-<!--    &lt;!&ndash; 댓글채워넣기 &ndash;&gt;-->
-<!--  </ul>-->
-
-<!--  <template id="readMode">-->
-<!--    <li class="item read"><span class="reply"></span>-->
-<!--      <button class="cmodifyBtn">수정</button><button class="cdelBtn">삭제</button>-->
-<!--    </li>-->
-<!--  </template>-->
-<!--  <template id="modifyMode">-->
-<!--    <li class="item modi">-->
-<!--      <input type="text" style="width: 400px;"><button class="csaveBtn">저장</button><button class="ccancelBtn">취소</button>-->
-<!--    </li>-->
-<!--  </template>-->
-<!--  <template id="err">-->
-<!--    <p class="errmsg"></p>-->
-<!--  </template>-->
-<!--</div>-->
-
-<!--<dialog id="delModal">-->
-<!--  <p>삭제하시겠습니까?</p>-->
-<!--  <form action="" method="dialog">-->
-<!--    <button id="cancelBtn">취소</button>-->
-<!--    <button id="delItemBtn">삭제</button>-->
-<!--  </form>-->
-<!--</dialog>-->
-
-<!--</body>-->
-<!--</html>-->
 
 <!DOCTYPE html>
 <html lang="ko"
@@ -134,7 +25,7 @@
   <div><label for="userId">아이디</label><input id="userId" type="text" th:value="${board.userId}" readonly></div>
   <div><label for="title">제목</label><input id="title" name="title" type="text" th:value="${board.title}" readonly></div>
   <div><label for="contents">내용</label><input id="contents" name="contents" type="textarea" th:value="${board.contents}" readonly></div>
-  <div><label for="pname">작성자</label><input id="pname" name="uname" type="text" th:value="${board.pname}" readonly></div>
+  <div><label for="pname">작성자</label><input id="pname" name="pname" type="text" th:value="${board.pname}" readonly></div>
   <div><label for="cdate">작성날짜</label><input id="cdate" name="cdate" type="text" th:value="${#temporals.format(board.cdate, 'yyyy년 MM월 dd일 a hh시 mm분')}" readonly></div>
   <div class="btns">
     <input id="modifyBtn" type="button" value="수정">

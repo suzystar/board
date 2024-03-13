@@ -18,11 +18,11 @@ public interface CommentSVC {
 
 
   //단건삭제
-  int deleteById(Long userId);
+  int deleteById(Long ccommentId);
 
 
   //수정
-  int updateById(Long userId,Comment comment);
+  int updateById(Long ccommentId,Comment comment);
 
   //총레코드 건수
   int totalCnt();

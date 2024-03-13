@@ -30,8 +30,8 @@ public class CommentSVCImpl implements CommentSVC {
 
 
   @Override
-  public List<Comment> findAll(Long cnum, Long reqPage, Long recordCnt) {
-    return commentDAO.findAll(cnum, reqPage, recordCnt);
+  public List<Comment> findAll(Long cnum, Long reqPage, Long recCnt) {
+    return commentDAO.findAll(cnum, reqPage, recCnt);
   }
 
   @Override
